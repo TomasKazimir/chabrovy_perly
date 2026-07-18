@@ -67,6 +67,16 @@ class QuotesAppTestCase(unittest.TestCase):
         self.assertIn("Apple joke", by_date.get_data(as_text=True))
         self.assertNotIn("Banana wisdom", by_date.get_data(as_text=True))
 
+    def test_login_rejects_external_next_redirect(self):
+        response = self.client.post(
+            "/admin/login?next=https://evil.example",
+            data={"username": "admin", "password": "secret"},
+            follow_redirects=False,
+        )
+
+        self.assertEqual(302, response.status_code)
+        self.assertEqual("/admin", response.headers["Location"])
+
     def test_admin_must_login_and_can_edit(self):
         redirected = self.client.get("/admin", follow_redirects=False)
         self.assertEqual(302, redirected.status_code)

@@ -128,7 +128,10 @@ def create_app(test_config=None):
                 session.clear()
                 session["user_id"] = user["id"]
                 session["username"] = user["username"]
-                return redirect(request.args.get("next") or url_for("admin_index"))
+                next_url = request.args.get("next")
+                if not _is_safe_next_url(next_url):
+                    next_url = None
+                return redirect(next_url or url_for("admin_index"))
 
             flash("Invalid credentials.")
 
@@ -202,8 +205,12 @@ def _is_valid_date(raw_date: str) -> bool:
         return False
 
 
+def _is_safe_next_url(target: str | None) -> bool:
+    return bool(target) and target.startswith("/") and not target.startswith("//")
+
+
 app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
