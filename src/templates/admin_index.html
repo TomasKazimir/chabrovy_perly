@@ -8,6 +8,11 @@
         <ul class="quotes">
             {% for quote in quotes %}
                 <li>
+                    {% if quote['image_path'] %}
+                        <div class="quote-image">
+                            <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" alt="Quote image" style="max-width: 300px; max-height: 300px;">
+                        </div>
+                    {% endif %}
                     <div>{{ quote['text'] }}</div>
                     <div class="meta">
                         Date: {{ quote['quote_date'] }} |

@@ -9,7 +9,7 @@ def index():
     search = request.args.get("q", "").strip()
     quote_date = request.args.get("date", "").strip()
 
-    query = "SELECT id, text, quote_date FROM quotes"
+    query = "SELECT id, text, quote_date, image_path FROM quotes"
     clauses = []
     params = []
 

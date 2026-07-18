@@ -3,7 +3,7 @@
 {% block content %}
   <h1>{% if quote %}Zedituj to, bráško{% else %}Val to sem, ty magore{% endif %}</h1>
 
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <p>
       <label>
         Kdy to ten idiot řekl
@@ -15,6 +15,18 @@
         Co přesně zvracel
         <textarea name="text" required>{{ quote['text'] if quote else '' }}</textarea>
       </label>
+    </p>
+    <p>
+      <label>
+        Podprůměrná fotka (volitelně)
+        <input type="file" name="image" accept="image/png,image/jpeg,image/gif,image/webp">
+      </label>
+      {% if quote and quote['image_path'] %}
+        <div style="margin-top: 10px;">
+          <p>Současná fotka:</p>
+          <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" style="max-width: 200px; max-height: 200px;">
+        </div>
+      {% endif %}
     </p>
     <button type="submit">Nahned to ulož, ty káre</button>
   </form>

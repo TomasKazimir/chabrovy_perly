@@ -1,19 +1,22 @@
 from flask import Flask
+from dotenv import load_dotenv
 import os
 
 from .extensions import init_db, close_db
 from .routes.main import main_bp
 from .routes.auth import auth_bp
 
+load_dotenv()
 
 def create_app(test_config=None):
     template_dir = os.path.join(os.path.dirname(__file__), "templates")
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir)
     app.config.from_mapping(
-        SECRET_KEY=os.environ.get("SECRET_KEY", "dev-secret-key"),
+        SECRET_KEY=os.environ.get("SECRET_KEY",),
         DATABASE=os.path.join(app.instance_path, "quotes.sqlite3"),
-        ADMIN_USERNAME=os.environ.get("ADMIN_USERNAME", "admin"),
-        ADMIN_PASSWORD=os.environ.get("ADMIN_PASSWORD", "change-me"),
+        ADMIN_USERNAME=os.environ.get("ADMIN_USERNAME",),
+        ADMIN_PASSWORD=os.environ.get("ADMIN_PASSWORD",),
+        MAX_CONTENT_LENGTH=5 * 1024 * 1024,  # 5MB max file size
     )
 
     if test_config:

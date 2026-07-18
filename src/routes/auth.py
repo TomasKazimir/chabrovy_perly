@@ -1,8 +1,42 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 from ..extensions import get_db
 from ..services.auth_service import login_required, _is_valid_date
 from datetime import datetime, timezone
+import os
+import uuid
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def save_upload_file(file):
+    if not file or file.filename == '':
+        return None
+    if not allowed_file(file.filename):
+        raise ValueError('Invalid file type. Allowed types: PNG, JPG, JPEG, GIF, WebP')
+    
+    upload_dir = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
+    os.makedirs(upload_dir, exist_ok=True)
+    
+    ext = file.filename.rsplit('.', 1)[1].lower()
+    filename = f"{uuid.uuid4()}.{ext}"
+    filepath = os.path.join(upload_dir, filename)
+    file.save(filepath)
+    return filename
+
+def delete_upload_file(image_path):
+    if not image_path:
+        return
+    upload_dir = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
+    filepath = os.path.join(upload_dir, image_path)
+    try:
+        if os.path.exists(filepath):
+            os.remove(filepath)
+    except Exception:
+        pass
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -11,7 +45,7 @@ auth_bp = Blueprint("auth", __name__)
 @login_required
 def admin_index():
     quotes = get_db().execute(
-        "SELECT id, text, quote_date FROM quotes ORDER BY quote_date DESC, id DESC"
+        "SELECT id, text, quote_date, image_path FROM quotes ORDER BY quote_date DESC, id DESC"
     ).fetchall()
     return render_template("admin_index.html", quotes=quotes)
 
@@ -50,20 +84,28 @@ def admin_new_quote():
     if request.method == "POST":
         text = request.form.get("text", "").strip()
         quote_date = request.form.get("quote_date", "").strip()
+        image_file = request.files.get("image")
 
         if not text:
             flash("Quote text is required.")
         elif not _is_valid_date(quote_date):
             flash("Quote date must be in YYYY-MM-DD format.")
         else:
-            timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
-            db = get_db()
-            db.execute(
-                "INSERT INTO quotes (text, quote_date, created_at, updated_at) VALUES (?, ?, ?, ?)",
-                (text, quote_date, timestamp, timestamp),
-            )
-            db.commit()
-            return redirect(url_for("auth.admin_index"))
+            try:
+                image_path = None
+                if image_file and image_file.filename != '':
+                    image_path = save_upload_file(image_file)
+                
+                timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
+                db = get_db()
+                db.execute(
+                    "INSERT INTO quotes (text, quote_date, image_path, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
+                    (text, quote_date, image_path, timestamp, timestamp),
+                )
+                db.commit()
+                return redirect(url_for("auth.admin_index"))
+            except ValueError as e:
+                flash(str(e))
 
     return render_template("admin_quote_form.html", quote=None)
 
@@ -73,7 +115,7 @@ def admin_new_quote():
 def admin_edit_quote(quote_id):
     db = get_db()
     quote = db.execute(
-        "SELECT id, text, quote_date FROM quotes WHERE id = ?", (quote_id,)
+        "SELECT id, text, quote_date, image_path FROM quotes WHERE id = ?", (quote_id,)
     ).fetchone()
     if quote is None:
         return redirect(url_for("auth.admin_index"))
@@ -81,18 +123,27 @@ def admin_edit_quote(quote_id):
     if request.method == "POST":
         text = request.form.get("text", "").strip()
         quote_date = request.form.get("quote_date", "").strip()
+        image_file = request.files.get("image")
 
         if not text:
             flash("Quote text is required.")
         elif not _is_valid_date(quote_date):
             flash("Quote date must be in YYYY-MM-DD format.")
         else:
-            db.execute(
-                "UPDATE quotes SET text = ?, quote_date = ?, updated_at = ? WHERE id = ?",
-                (text, quote_date, datetime.now(timezone.utc).isoformat(timespec="seconds"), quote_id),
-            )
-            db.commit()
-            return redirect(url_for("auth.admin_index"))
+            try:
+                image_path = quote['image_path']
+                if image_file and image_file.filename != '':
+                    delete_upload_file(image_path)
+                    image_path = save_upload_file(image_file)
+                
+                db.execute(
+                    "UPDATE quotes SET text = ?, quote_date = ?, image_path = ?, updated_at = ? WHERE id = ?",
+                    (text, quote_date, image_path, datetime.now(timezone.utc).isoformat(timespec="seconds"), quote_id),
+                )
+                db.commit()
+                return redirect(url_for("auth.admin_index"))
+            except ValueError as e:
+                flash(str(e))
 
     return render_template("admin_quote_form.html", quote=quote)
 
@@ -101,6 +152,9 @@ def admin_edit_quote(quote_id):
 @login_required
 def admin_delete_quote(quote_id):
     db = get_db()
+    quote = db.execute("SELECT image_path FROM quotes WHERE id = ?", (quote_id,)).fetchone()
+    if quote:
+        delete_upload_file(quote['image_path'])
     db.execute("DELETE FROM quotes WHERE id = ?", (quote_id,))
     db.commit()
     return redirect(url_for("auth.admin_index"))

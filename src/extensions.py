@@ -34,10 +34,16 @@ def init_db():
             text TEXT NOT NULL,
             quote_date TEXT NOT NULL,
             created_at TEXT NOT NULL,
-            updated_at TEXT NOT NULL
+            updated_at TEXT NOT NULL,
+            image_path TEXT
         )
         """
     )
+    # Add image_path column if it doesn't exist (for existing databases)
+    try:
+        db.execute("ALTER TABLE quotes ADD COLUMN image_path TEXT")
+    except Exception:
+        pass
     db.execute(
         """
         CREATE TABLE IF NOT EXISTS users (
