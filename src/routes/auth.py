@@ -19,7 +19,7 @@ def save_upload_file(file):
     if not file or file.filename == '':
         return None
     if not allowed_file(file.filename):
-        raise ValueError('Invalid file type. Allowed types: PNG, JPG, JPEG, GIF, WebP')
+        raise ValueError('Špatnej formát, kámo. Povoleno: PNG, JPG, JPEG, GIF, WebP')
 
     upload_dir = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
     os.makedirs(upload_dir, exist_ok=True)
@@ -41,7 +41,7 @@ def save_upload_file(file):
         # EXIF orientation data is preserved by default if parsed correctly
         img.save(filepath, format=img.format, quality=100, optimize=True)
     except Exception as e:
-        raise ValueError(f"Failed to process image: {str(e)}")
+        raise ValueError(f"Chyba v procesování tohohle supersnímku: {str(e)}")
 
     return filename
 

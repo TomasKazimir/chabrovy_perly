@@ -22,7 +22,7 @@
                 <li>
                     {% if quote['image_path'] %}
                         <div class="quote-image">
-                            <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" alt="Quote image" style="max-width: 300px; max-height: 300px;">
+                            <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" alt="Snímek, smažáku" style="max-width: 300px; max-height: 300px;">
                         </div>
                     {% endif %}
                     <div>{{ quote['text'] }}</div>
