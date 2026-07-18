@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Chabrove Perly{% endblock %}</title>
+    <style>
+      body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+      nav { display: flex; gap: 1rem; margin-bottom: 1rem; align-items: center; }
+      form.inline { display: inline; }
+      ul.quotes { padding: 0; list-style: none; }
+      ul.quotes li { border: 1px solid #ddd; margin-bottom: 0.75rem; padding: 0.75rem; border-radius: 0.25rem; }
+      .meta { color: #666; font-size: 0.9rem; margin-top: 0.4rem; }
+      .flashes { color: #b00020; }
+      textarea { min-height: 120px; width: 100%; }
+      input[type="text"], input[type="date"], input[type="password"] { width: 100%; max-width: 420px; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('index') }}">Home</a>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('admin_index') }}">Admin</a>
+        <form class="inline" method="post" action="{{ url_for('admin_logout') }}">
+          <button type="submit">Logout</button>
+        </form>
+      {% else %}
+        <a href="{{ url_for('admin_login') }}">Admin login</a>
+      {% endif %}
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </body>
+</html>

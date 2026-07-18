@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Admin quotes{% endblock %}
+{% block content %}
+  <h1>Manage quotes</h1>
+  <p><a href="{{ url_for('admin_new_quote') }}">Add new quote</a></p>
+
+  {% if quotes %}
+    <ul class="quotes">
+      {% for quote in quotes %}
+        <li>
+          <div>{{ quote['text'] }}</div>
+          <div class="meta">
+            Date: {{ quote['quote_date'] }} |
+            <a href="{{ url_for('admin_edit_quote', quote_id=quote['id']) }}">Edit</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No quotes yet.</p>
+  {% endif %}
+{% endblock %}

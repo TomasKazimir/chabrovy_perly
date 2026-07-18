@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}{% if quote %}Edit quote{% else %}Add quote{% endif %}{% endblock %}
+{% block content %}
+  <h1>{% if quote %}Edit quote{% else %}Add quote{% endif %}</h1>
+
+  <form method="post">
+    <p>
+      <label>
+        Quote date
+        <input type="date" name="quote_date" value="{{ quote['quote_date'] if quote else '' }}" required>
+      </label>
+    </p>
+    <p>
+      <label>
+        Quote text
+        <textarea name="text" required>{{ quote['text'] if quote else '' }}</textarea>
+      </label>
+    </p>
+    <button type="submit">Save</button>
+  </form>
+{% endblock %}
