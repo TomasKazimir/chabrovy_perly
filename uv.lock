@@ -17,10 +17,14 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "flask" },
+    { name = "werkzeug" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "flask" }]
+requires-dist = [
+    { name = "flask" },
+    { name = "werkzeug", specifier = ">=3.1.8" },
+]
 
 [[package]]
 name = "click"

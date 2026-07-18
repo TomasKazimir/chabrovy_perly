@@ -1,0 +1,147 @@
+/* Shared site stylesheet — clean, simple, uniform across public and admin pages */
+:root{
+  --bg: linear-gradient(180deg,#f3f7ff 0%, #f7f7f9 100%);
+  --bg-solid: #f7f7f9;
+  --card: #ffffff;
+  --card-2: linear-gradient(180deg,#ffffff,#fbfdff);
+  --accent: #2b7cff;
+  --accent-2: #ff6b6b;
+  --text: #22262a;
+  --muted: #6b7176;
+  --muted-2: #8b8f95;
+  --success: #1f9d67;
+  --danger: #e55353;
+  --radius: 10px;
+  --max-width: 900px;
+  --nav-bg: linear-gradient(90deg, rgba(43,124,255,0.06), rgba(255,107,107,0.04));
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+  padding:24px 16px;
+}
+
+.container{
+  max-width:var(--max-width);
+  margin:0 auto;
+  background:transparent;
+}
+
+/* Navigation */
+nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  margin-bottom:18px;
+}
+nav a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:600;
+}
+nav a:hover{ text-decoration:underline }
+
+/* Inline form inside nav */
+form.inline{ display:inline-block; margin:0 }
+form.inline button{
+  background:transparent;
+  border:1px solid transparent;
+  color:var(--accent);
+  font-weight:600;
+  padding:6px 10px;
+  cursor:pointer;
+}
+
+/* Cards and content */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:18px;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04);
+  margin-bottom:16px;
+}
+
+h1,h2,h3{margin:0 0 12px 0}
+p{margin:0 0 12px 0}
+
+/* Flashed messages */
+.flashes{list-style:none; padding:0; margin:0 0 12px 0}
+.flashes li{
+  background:#fff8e6;
+  border:1px solid rgba(218,165,32,0.12);
+  color:#66530b;
+  padding:10px 12px;
+  border-radius:6px;
+  margin-bottom:8px;
+}
+
+/* Quotes list (index and admin) */
+.quotes{list-style:none;padding:0;margin:0}
+.quotes li{
+  background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+  border-radius:6px;
+  padding:14px;
+  margin-bottom:10px;
+  display:block;
+}
+.quotes li .meta{
+  margin-top:8px;
+  color:var(--muted);
+  font-size:0.9rem;
+}
+.quotes li .meta a{color:var(--accent); text-decoration:none}
+
+/* Forms */
+label{display:block;margin-bottom:6px;font-weight:600;color:var(--text)}
+input[type="text"],input[type="password"],textarea,select{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #e6e6ea;
+  border-radius:6px;
+  background: #fff;
+  color:var(--text);
+  font-size:1rem;
+}
+textarea{min-height:120px}
+
+button{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+button.secondary{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid rgba(43,124,255,0.12);
+}
+
+/* Small helpers */
+.meta{font-size:0.9rem;color:var(--muted)}
+.small{font-size:0.85rem;color:var(--muted)}
+
+/* Admin-specific adjustments (keeps same look) */
+.admin-form{max-width:640px}
+.admin-form .row{margin-bottom:12px}
+
+/* Responsive */
+@media (max-width:600px){
+  body{padding:16px 12px}
+  .container{padding:0}
+  nav{flex-wrap:wrap;gap:8px}
+}
+
+/* Accessibility focus */
+a:focus,button:focus,input:focus,textarea:focus{outline:3px solid rgba(43,124,255,0.14);outline-offset:2px}

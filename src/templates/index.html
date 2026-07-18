@@ -8,13 +8,12 @@
             Search by substring
             <input type="text" name="q" value="{{ search }}" placeholder="Find a word or phrase">
         </label>
-        <br>
         <label>
             Search by date
             <input type="date" name="date" value="{{ quote_date }}">
         </label>
         <button type="submit">Filter</button>
-        <a href="{{ url_for('index') }}">Reset</a>
+        <a href="{{ url_for('main.index') }}">Reset</a>
     </form>
 
     {% if quotes %}

@@ -1,7 +1,7 @@
 import tempfile
 import unittest
 
-from app import create_app
+from src import create_app
 
 
 class QuotesAppTestCase(unittest.TestCase):
