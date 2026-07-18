@@ -19,25 +19,39 @@ class UserManager:
 
     def _ensure_db(self) -> None:
         """Ensure database and users table exist."""
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        conn = sqlite3.connect(str(self.db_path))
-        conn.execute(
-            """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                username TEXT UNIQUE NOT NULL,
-                password_hash TEXT NOT NULL
+        try:
+            self.db_path.parent.mkdir(parents=True, exist_ok=True)
+            conn = sqlite3.connect(str(self.db_path))
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT UNIQUE NOT NULL,
+                    password_hash TEXT NOT NULL
+                )
+                """
             )
-            """
-        )
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
+        except sqlite3.Error as e:
+            print(f"[ERROR] Failed to initialize database: {e}")
+            raise
+        except Exception as e:
+            print(f"[ERROR] Unexpected error initializing database: {e}")
+            raise
 
     def _get_conn(self) -> sqlite3.Connection:
         """Get database connection."""
-        conn = sqlite3.connect(str(self.db_path))
-        conn.row_factory = sqlite3.Row
-        return conn
+        try:
+            conn = sqlite3.connect(str(self.db_path))
+            conn.row_factory = sqlite3.Row
+            return conn
+        except sqlite3.Error as e:
+            print(f"[ERROR] Failed to connect to database: {e}")
+            raise
+        except Exception as e:
+            print(f"[ERROR] Unexpected error connecting to database: {e}")
+            raise
 
     def add_user(self, username: str, password: str) -> None:
         """Add a new user."""
