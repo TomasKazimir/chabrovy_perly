@@ -8,7 +8,7 @@ import uuid
 from PIL import Image
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-MAX_IMAGE_DIMENSION = 256  # Target bounding box dimension in pixels
+MAX_IMAGE_DIMENSION = 512  # Target bounding box dimension in pixels
 
 
 def allowed_file(filename):
@@ -39,7 +39,7 @@ def save_upload_file(file):
 
         # Save processed image to disk, matching its original format or setting quality constraints
         # EXIF orientation data is preserved by default if parsed correctly
-        img.save(filepath, format=img.format, quality=85, optimize=True)
+        img.save(filepath, format=img.format, quality=100, optimize=True)
     except Exception as e:
         raise ValueError(f"Failed to process image: {str(e)}")
 
