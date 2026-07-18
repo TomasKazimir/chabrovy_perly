@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
+    {% if session.get('user_id') %}
+      <div class="admin-ribbon" aria-hidden="true">
+        <span>KAPELMAJSTER</span>
+      </div>
+    {% endif %}
+
     <nav>
       <a href="{{ url_for('main.index') }}">Domeček, Zděňďo</a>
       {% if session.get('user_id') %}

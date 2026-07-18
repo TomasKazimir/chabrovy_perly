@@ -297,3 +297,44 @@ a:has(span):hover, p a:hover {
     padding: 20px;
   }
 }
+
+/* Construction Hazard Ribbon for Authenticated Administrators */
+.admin-ribbon {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none; /* Prevents blocking clicks on elements underneath the corner */
+}
+
+.admin-ribbon span {
+  display: block;
+  width: 225px;
+  padding: 8px 0;
+  background-color: var(--accent-secondary);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    var(--bg) 10px,
+    var(--bg) 20px
+  );
+  color: var(--accent-secondary);
+  text-shadow: -1px -1px 0 var(--bg), 1px -1px 0 var(--bg), -1px 1px 0 var(--bg), 1px 1px 0 var(--bg);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.1em;
+  border-top: 2px solid var(--accent-secondary);
+  border-bottom: 2px solid var(--accent-secondary);
+  position: absolute;
+  top: 30px;
+  right: -55px;
+  transform: rotate(45deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
