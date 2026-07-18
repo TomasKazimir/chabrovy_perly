@@ -1,31 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Quotes{% endblock %}
 {% block content %}
-  <h1>Funny quotes</h1>
+    <h1>Zkurvene vyrazivo</h1>
 
-  <form method="get">
-    <label>
-      Search by substring
-      <input type="text" name="q" value="{{ search }}" placeholder="Find a word or phrase">
-    </label>
-    <label>
-      Search by date
-      <input type="date" name="date" value="{{ quote_date }}">
-    </label>
-    <button type="submit">Filter</button>
-    <a href="{{ url_for('index') }}">Reset</a>
-  </form>
+    <form method="get">
+        <label>
+            Search by substring
+            <input type="text" name="q" value="{{ search }}" placeholder="Find a word or phrase">
+        </label>
+        <br>
+        <label>
+            Search by date
+            <input type="date" name="date" value="{{ quote_date }}">
+        </label>
+        <button type="submit">Filter</button>
+        <a href="{{ url_for('index') }}">Reset</a>
+    </form>
 
-  {% if quotes %}
-    <ul class="quotes">
-      {% for quote in quotes %}
-        <li>
-          <div>{{ quote['text'] }}</div>
-          <div class="meta">Date: {{ quote['quote_date'] }}</div>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No quotes found.</p>
-  {% endif %}
+    {% if quotes %}
+        <ul class="quotes">
+            {% for quote in quotes %}
+                <li>
+                    <div>{{ quote['text'] }}</div>
+                    <div class="meta">Date: {{ quote['quote_date'] }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No quotes found.</p>
+    {% endif %}
 {% endblock %}
