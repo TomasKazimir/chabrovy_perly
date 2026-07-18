@@ -1,31 +1,50 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import check_password_hash
-from werkzeug.utils import secure_filename
 from ..extensions import get_db
 from ..services.auth_service import login_required, _is_valid_date
 from datetime import datetime, timezone
 import os
 import uuid
+from PIL import Image
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+MAX_IMAGE_DIMENSION = 1280  # Target bounding box dimension in pixels
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def save_upload_file(file):
     if not file or file.filename == '':
         return None
     if not allowed_file(file.filename):
         raise ValueError('Invalid file type. Allowed types: PNG, JPG, JPEG, GIF, WebP')
-    
+
     upload_dir = os.path.join(os.path.dirname(__file__), '..', 'static', 'uploads')
     os.makedirs(upload_dir, exist_ok=True)
-    
+
     ext = file.filename.rsplit('.', 1)[1].lower()
     filename = f"{uuid.uuid4()}.{ext}"
     filepath = os.path.join(upload_dir, filename)
-    file.save(filepath)
+
+    try:
+        # Open the image stream directly from memory
+        img = Image.open(file.stream)
+
+        # Verify if dimensions exceed the specified threshold
+        if img.width > MAX_IMAGE_DIMENSION or img.height > MAX_IMAGE_DIMENSION:
+            # calculate aspect ratio preservation parameters
+            img.thumbnail((MAX_IMAGE_DIMENSION, MAX_IMAGE_DIMENSION), Image.Resampling.LANCZOS)
+
+        # Save processed image to disk, matching its original format or setting quality constraints
+        # EXIF orientation data is preserved by default if parsed correctly
+        img.save(filepath, format=img.format, quality=85, optimize=True)
+    except Exception as e:
+        raise ValueError(f"Failed to process image: {str(e)}")
+
     return filename
+
 
 def delete_upload_file(image_path):
     if not image_path:
@@ -95,7 +114,7 @@ def admin_new_quote():
                 image_path = None
                 if image_file and image_file.filename != '':
                     image_path = save_upload_file(image_file)
-                
+
                 timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
                 db = get_db()
                 db.execute(
@@ -135,7 +154,7 @@ def admin_edit_quote(quote_id):
                 if image_file and image_file.filename != '':
                     delete_upload_file(image_path)
                     image_path = save_upload_file(image_file)
-                
+
                 db.execute(
                     "UPDATE quotes SET text = ?, quote_date = ?, image_path = ?, updated_at = ? WHERE id = ?",
                     (text, quote_date, image_path, datetime.now(timezone.utc).isoformat(timespec="seconds"), quote_id),

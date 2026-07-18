@@ -16,7 +16,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, "quotes.sqlite3"),
         ADMIN_USERNAME=os.environ.get("ADMIN_USERNAME",),
         ADMIN_PASSWORD=os.environ.get("ADMIN_PASSWORD",),
-        MAX_CONTENT_LENGTH=5 * 1024 * 1024,  # 5MB max file size
+        # MAX_CONTENT_LENGTH=5 * 1024 * 1024,  # 5MB max file size
     )
 
     if test_config:
