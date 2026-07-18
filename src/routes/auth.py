@@ -8,7 +8,7 @@ import uuid
 from PIL import Image
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-MAX_IMAGE_DIMENSION = 1280  # Target bounding box dimension in pixels
+MAX_IMAGE_DIMENSION = 256  # Target bounding box dimension in pixels
 
 
 def allowed_file(filename):
