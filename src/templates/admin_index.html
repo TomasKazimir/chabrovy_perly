@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
-{% block title %}Admin quotes{% endblock %}
+{% block title %}Admin{% endblock %}
 {% block content %}
-  <h1>Manage quotes</h1>
-  <p><a href="{{ url_for('auth.admin_new_quote') }}">Add new quote</a></p>
+    <h1>Koriguj ty zvratky</h1>
+    <p><a href="{{ url_for('auth.admin_new_quote') }}">Přidej novej blábol</a></p>
 
-  {% if quotes %}
-    <ul class="quotes">
-      {% for quote in quotes %}
-        <li>
-          <div>{{ quote['text'] }}</div>
-          <div class="meta">
-            Date: {{ quote['quote_date'] }} |
-            <a href="{{ url_for('auth.admin_edit_quote', quote_id=quote['id']) }}">Edit</a>
-          </div>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No quotes yet.</p>
-  {% endif %}
+    {% if quotes %}
+        <ul class="quotes">
+            {% for quote in quotes %}
+                <li>
+                    <div>{{ quote['text'] }}</div>
+                    <div class="meta">
+                        Date: {{ quote['quote_date'] }} |
+                        <a href="{{ url_for('auth.admin_edit_quote', quote_id=quote['id']) }}">[Uprav mi ho, pičo]</a>
+                        <a href="{{ url_for('auth.admin_delete_quote', quote_id=quote['id']) }}"
+                           onclick="return confirm('Are you sure you want to delete this quote?');">[Zahoď tu kurvu]</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Prázdno jak v tvojí peněžence, debile.</p>
+    {% endif %}
 {% endblock %}

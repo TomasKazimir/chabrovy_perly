@@ -1,147 +1,299 @@
-/* Shared site stylesheet — clean, simple, uniform across public and admin pages */
-:root{
-  --bg: linear-gradient(180deg,#f3f7ff 0%, #f7f7f9 100%);
-  --bg-solid: #f7f7f9;
-  --card: #ffffff;
-  --card-2: linear-gradient(180deg,#ffffff,#fbfdff);
-  --accent: #2b7cff;
-  --accent-2: #ff6b6b;
-  --text: #22262a;
-  --muted: #6b7176;
-  --muted-2: #8b8f95;
-  --success: #1f9d67;
-  --danger: #e55353;
-  --radius: 10px;
-  --max-width: 900px;
-  --nav-bg: linear-gradient(90deg, rgba(43,124,255,0.06), rgba(255,107,107,0.04));
+/* Refactored stylesheet tailored to the chaotic, aggressive aesthetic of the template text while maintaining proper UX/layout practices */
+:root {
+  --bg: #09090b;
+  --panel: #18181b;
+  --panel-border: #27272a;
+  --accent-primary: #ff3e3e; /* Aggressive crimson red */
+  --accent-secondary: #facc15; /* Warning yellow */
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --danger: #ef4444;
+  --radius: 8px;
+  --max-width: 800px;
+  --font-stack: "JetBrains Mono", Fira Code, Monaco, Consolas, Ubuntu Mono, monospace;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background:var(--bg);
-  color:var(--text);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.5;
-  padding:24px 16px;
+* {
+  box-sizing: border-box;
 }
 
-.container{
-  max-width:var(--max-width);
-  margin:0 auto;
-  background:transparent;
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-stack);
+  background-color: var(--bg);
+  color: var(--text-main);
+  padding: 40px 20px;
+  line-height: 1.6;
 }
 
-/* Navigation */
-nav{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  margin-bottom:18px;
-}
-nav a{
-  color:var(--accent);
-  text-decoration:none;
-  font-weight:600;
-}
-nav a:hover{ text-decoration:underline }
-
-/* Inline form inside nav */
-form.inline{ display:inline-block; margin:0 }
-form.inline button{
-  background:transparent;
-  border:1px solid transparent;
-  color:var(--accent);
-  font-weight:600;
-  padding:6px 10px;
-  cursor:pointer;
+/* Base structural layout applied directly to body content boundaries */
+nav, form, ul.quotes, .flashes, p {
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Cards and content */
-.card{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:18px;
-  box-shadow:0 1px 0 rgba(0,0,0,0.04);
-  margin-bottom:16px;
+h1 {
+  max-width: var(--max-width);
+  margin: 40px auto 24px auto;
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  color: var(--text-main);
+  border-left: 6px solid var(--accent-primary);
+  padding-left: 16px;
+  line-height: 1.1;
 }
 
-h1,h2,h3{margin:0 0 12px 0}
-p{margin:0 0 12px 0}
-
-/* Flashed messages */
-.flashes{list-style:none; padding:0; margin:0 0 12px 0}
-.flashes li{
-  background:#fff8e6;
-  border:1px solid rgba(218,165,32,0.12);
-  color:#66530b;
-  padding:10px 12px;
-  border-radius:6px;
-  margin-bottom:8px;
+/* Navigation layout and boundary constraints[cite: 4] */
+nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px dashed var(--panel-border);
+  margin-bottom: 40px;
 }
 
-/* Quotes list (index and admin) */
-.quotes{list-style:none;padding:0;margin:0}
-.quotes li{
-  background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
-  border-radius:6px;
-  padding:14px;
-  margin-bottom:10px;
-  display:block;
-}
-.quotes li .meta{
-  margin-top:8px;
-  color:var(--muted);
-  font-size:0.9rem;
-}
-.quotes li .meta a{color:var(--accent); text-decoration:none}
-
-/* Forms */
-label{display:block;margin-bottom:6px;font-weight:600;color:var(--text)}
-input[type="text"],input[type="password"],textarea,select{
-  width:100%;
-  padding:10px 12px;
-  border:1px solid #e6e6ea;
-  border-radius:6px;
-  background: #fff;
-  color:var(--text);
-  font-size:1rem;
-}
-textarea{min-height:120px}
-
-button{
-  display:inline-block;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  padding:8px 14px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:600;
-}
-button.secondary{
-  background:transparent;
-  color:var(--accent);
-  border:1px solid rgba(43,124,255,0.12);
+nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  transition: color 0.15s ease;
 }
 
-/* Small helpers */
-.meta{font-size:0.9rem;color:var(--muted)}
-.small{font-size:0.85rem;color:var(--muted)}
-
-/* Admin-specific adjustments (keeps same look) */
-.admin-form{max-width:640px}
-.admin-form .row{margin-bottom:12px}
-
-/* Responsive */
-@media (max-width:600px){
-  body{padding:16px 12px}
-  .container{padding:0}
-  nav{flex-wrap:wrap;gap:8px}
+nav a:hover {
+  color: var(--accent-secondary);
 }
 
-/* Accessibility focus */
-a:focus,button:focus,input:focus,textarea:focus{outline:3px solid rgba(43,124,255,0.14);outline-offset:2px}
+/* Inline execution container within navigation context[cite: 4] */
+form.inline {
+  display: inline-block;
+  margin: 0;
+}
+
+form.inline button {
+  background: transparent;
+  border: 1px solid var(--accent-primary);
+  color: var(--accent-primary);
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+}
+
+form.inline button:hover {
+  background: var(--accent-primary);
+  color: var(--bg);
+}
+
+/* Form layouts and user control nodes[cite: 2, 3, 5] */
+form:not(.inline) {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  padding: 32px;
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+
+form:not(.inline) p {
+  margin: 0 0 20px 0;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  color: var(--text-main);
+  font-family: var(--font-stack);
+  font-size: 1rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(255, 62, 62, 0.2);
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* Primary and destructive structural button elements[cite: 2, 3, 5] */
+button[type="submit"] {
+  display: inline-block;
+  width: 100%;
+  background: var(--accent-primary);
+  color: var(--text-main);
+  border: none;
+  padding: 14px;
+  font-family: var(--font-stack);
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+button[type="submit"]:hover {
+  background: #e03232;
+}
+
+/* Separate execution chain for destructive mutations[cite: 3] */
+form[action*="delete"] {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-top: 12px;
+}
+
+form[action*="delete"] button {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+form[action*="delete"] button:hover {
+  background: var(--danger);
+  color: var(--text-main);
+}
+
+/* Dynamic container rendering pipeline for flash data[cite: 4] */
+.flashes {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 32px;
+}
+
+.flashes li {
+  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid var(--accent-secondary);
+  color: var(--accent-secondary);
+  padding: 16px;
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+
+/* Content rendering node tree for list views[cite: 1, 5] */
+.quotes {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+}
+
+.quotes li {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.quotes li::before {
+  content: "“";
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  font-size: 8rem;
+  color: rgba(255, 255, 255, 0.03);
+  font-family: Georgia, serif;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.quotes li div:first-child {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text-main);
+  word-break: break-word;
+}
+
+.quotes li .meta {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.quotes li .meta a {
+  color: var(--accent-secondary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.quotes li .meta a[href*="delete"] {
+  color: var(--danger);
+}
+
+.quotes li .meta a:hover {
+  text-decoration: underline;
+}
+
+/* General fallback typography element configurations[cite: 1, 5] */
+p:not(:has(a)) {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+a:has(span), p a {
+  color: var(--accent-secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+a:has(span):hover, p a:hover {
+  text-decoration: underline;
+}
+
+/* Adaptive grid breakpoint parameters */
+@media (max-width: 768px) {
+  body {
+    padding: 20px 12px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    margin: 24px auto 16px auto;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  form:not(.inline) {
+    padding: 20px;
+  }
+}

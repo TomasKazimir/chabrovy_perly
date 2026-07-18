@@ -96,3 +96,12 @@ def admin_edit_quote(quote_id):
 
     return render_template("admin_quote_form.html", quote=quote)
 
+
+@auth_bp.route("/admin/quotes/<int:quote_id>/delete", methods=("GET",))
+@login_required
+def admin_delete_quote(quote_id):
+    db = get_db()
+    db.execute("DELETE FROM quotes WHERE id = ?", (quote_id,))
+    db.commit()
+    return redirect(url_for("auth.admin_index"))
+

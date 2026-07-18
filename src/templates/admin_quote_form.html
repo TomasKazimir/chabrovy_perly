@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}{% if quote %}Edit quote{% else %}Add quote{% endif %}{% endblock %}
+{% block title %}{% if quote %}Edit{% else %}Add{% endif %}{% endblock %}
 {% block content %}
-  <h1>{% if quote %}Edit quote{% else %}Add quote{% endif %}</h1>
+  <h1>{% if quote %}Zedituj to, bráško{% else %}Val to sem, ty magore{% endif %}</h1>
 
   <form method="post">
     <p>
       <label>
-        Quote date
+        Kdy to ten idiot řekl
         <input type="date" name="quote_date" value="{{ quote['quote_date'] if quote else '' }}" required>
       </label>
     </p>
     <p>
       <label>
-        Quote text
+        Co přesně zvracel
         <textarea name="text" required>{{ quote['text'] if quote else '' }}</textarea>
       </label>
     </p>
-    <button type="submit">Save</button>
+    <button type="submit">Nahned to ulož, ty káre</button>
   </form>
+  {% if quote %}
+  <form method="get" action="{{ url_for('auth.admin_delete_quote', quote_id=quote['id']) }}" onsubmit="return confirm('Fakt to chceš smazat, ty hovado?');">
+    <button type="submit">Odpal to pryč</button>
+  </form>
+  {% endif %}
 {% endblock %}

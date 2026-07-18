@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
-{% block title %}Quotes{% endblock %}
+{% block title %}Zkurvené výrazivo{% endblock %}
 {% block content %}
-    <h1>Zkurvene vyrazivo</h1>
+    <h1>Zkurvené výrazivo</h1>
 
     <form method="get">
         <label>
-            Search by substring
-            <input type="text" name="q" value="{{ search }}" placeholder="Find a word or phrase">
+            Vyhledej ten podhoven
+            <input type="text" name="q" value="{{ search }}" placeholder="Hledej, šmudlo">
         </label>
         <label>
-            Search by date
+            Kdy to ten čůrák řekl?
             <input type="date" name="date" value="{{ quote_date }}">
         </label>
-        <button type="submit">Filter</button>
-        <a href="{{ url_for('main.index') }}">Reset</a>
+        <button type="submit">Vyfiltruj ju, kurvu!</button>
+        <a href="{{ url_for('main.index') }}">Znova, posral jsem to</a>
     </form>
 
     {% if quotes %}
@@ -21,11 +21,11 @@
             {% for quote in quotes %}
                 <li>
                     <div>{{ quote['text'] }}</div>
-                    <div class="meta">Date: {{ quote['quote_date'] }}</div>
+                    <div class="meta">Kdy to bylo: {{ quote['quote_date'] }}</div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>No quotes found.</p>
+        <p>Prázdný jak tvoje kedlubna, ty sračko.</p>
     {% endif %}
 {% endblock %}

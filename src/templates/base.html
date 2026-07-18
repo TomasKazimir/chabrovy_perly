@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Zkurvene vyrazivo{% endblock %}</title>
+    <title>{% block title %}Zkurvené výrazivo{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <nav>
-      <a href="{{ url_for('main.index') }}">Home</a>
+      <a href="{{ url_for('main.index') }}">Domeček, Zděňďo</a>
       {% if session.get('user_id') %}
-        <a href="{{ url_for('auth.admin_index') }}">Admin</a>
+        <a href="{{ url_for('auth.admin_index') }}">Teď si vás kúpim všecky!</a>
         <form class="inline" method="post" action="{{ url_for('auth.admin_logout') }}">
-          <button type="submit">Logout</button>
+          <button type="submit">Jdu do piče</button>
         </form>
       {% else %}
-        <a href="{{ url_for('auth.admin_login') }}">Admin login</a>
+        <a href="{{ url_for('auth.admin_login') }}">Sem může jen Kapelmajster...</a>
       {% endif %}
     </nav>
 
