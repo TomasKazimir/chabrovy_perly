@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash
 class UserManager:
     def __init__(self, db_path: str = None):
         if db_path is None:
-            db_path = Path("instance") / "quotes_fallback.sqlite3"
+            db_path = Path("instance") / "quotes.sqlite3"
 
         self.db_path = Path(db_path)
         self._ensure_db()
