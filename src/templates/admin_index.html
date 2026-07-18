@@ -10,7 +10,7 @@
                 <li>
                     {% if quote['image_path'] %}
                         <div class="quote-image">
-                            <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" alt="Quote image" style="max-width: 300px; max-height: 300px;">
+                            <img src="{{ url_for('static', filename='uploads/' + quote['image_path']) }}" alt="Snímek, močále" style="max-width: 300px; max-height: 300px;">
                         </div>
                     {% endif %}
                     <div>{{ quote['text'] }}</div>
@@ -18,7 +18,7 @@
                         Date: {{ quote['quote_date'] }} |
                         <a href="{{ url_for('auth.admin_edit_quote', quote_id=quote['id']) }}">[Uprav mi ho, pičo]</a>
                         <a href="{{ url_for('auth.admin_delete_quote', quote_id=quote['id']) }}"
-                           onclick="return confirm('Are you sure you want to delete this quote?');">[Zahoď tu kurvu]</a>
+                           onclick="return confirm('Seš si jistej, že to chceš poslat do pekel?');">[Zahoď tu kurvu]</a>
                     </div>
                 </li>
             {% endfor %}
